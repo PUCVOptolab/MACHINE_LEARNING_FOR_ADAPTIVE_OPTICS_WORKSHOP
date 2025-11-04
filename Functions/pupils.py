@@ -54,3 +54,10 @@ def CreateTelescopePupil(Npx: int,
         pupil = torch.ones_like(r_s)
 
     return pupil.unsqueeze(0).unsqueeze(0)  # (1, 1, Npx, Npx)
+
+def make_circular_pupil(N, D, device):
+    y = torch.arange(N, device=device) - N//2
+    x = torch.arange(N, device=device) - N//2
+    Y, X = torch.meshgrid(y, x, indexing='ij')
+    R = torch.sqrt(X**2 + Y**2)
+    return (R <= (D/2)).float()
